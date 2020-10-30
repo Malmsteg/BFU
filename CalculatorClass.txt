@@ -1,0 +1,84 @@
+namespace Calculator
+{
+    /// <summary>
+    /// Caclulator class is used to simulate a simple calculator. Can store two numbers and a symbol. Performs addition, subtraction, multiplicaton and division.
+    /// </summary>
+    class Calculator
+    {
+        private double number1, number2;
+        private char symbol;
+
+        // Empty constructor
+        public Calculator()
+        {}
+
+        /// <summary>
+        /// Depending on the symbol, this method will add, subtract, multiply or divide number1 and number2
+        /// </summary>
+        /// <returns>Returns a double</returns>
+        public double Operate()
+        {
+            if (symbol == '+')
+                return Add();
+            else if (symbol == '-')
+                return Subtract();
+            else if (symbol == '*')
+                return Multiply();
+            else
+                return Divide();
+        }
+
+        public double Add() //Add
+        {
+            return (number1 + number2);
+        }
+        public double Subtract() //Subtract
+        {
+            return (number1 - number2);
+        }
+        public double Multiply() //Multiply
+        {
+            return (number1 * number2);
+        }
+        public double Divide() //Divide
+        {
+            return (number1 / number2);
+        }
+
+        public double Number1 //Setter & Getter
+        {
+            get
+            {
+                return number1;
+            }
+            set
+            {
+                number1 = value;
+            }
+        }
+
+        public double Number2 //Setter & Getter
+        {
+            get
+            {
+                return number2;
+            }
+            set
+            {
+                number2 = value;
+            }
+        }
+
+        public char Symbol //Setter & Getter
+        {
+            get
+            {
+                return symbol;
+            }
+            set
+            {
+                symbol = value;
+            }
+        }
+    }
+}

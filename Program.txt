@@ -1,0 +1,158 @@
+namespace Calculator
+{
+    class Program
+    {
+        /// <summary>
+        /// Author: Gustaf Malmsten
+        /// File created: 2020-10-12
+        /// Last changed: 2020-10-19
+        /// 
+        /// Jag har valt att använda 'GOTO' då det är ett nytt begrepp för mig. 
+        /// Däremot förstår jag varför man inte bör använda 'GOTO' då det bland annat
+        /// gör det svårare att få en överblick över programflödet.
+        /// 
+        /// </summary>
+        
+        static void Main(string[] args)
+        {
+            Calculator calculator = new Calculator(); // A Calculator-object
+            string input; // Variable to store input
+            double num1, num2; // The numbers used for number input validation
+            bool ok; // Variable used for validating input
+
+            Reset: // Label used for when user resets the calculator
+
+            PrintInstructions();
+            Console.WriteLine("Skriv in det första talet: "); // Prompt user input for first number
+
+            do
+            {
+                input = Console.ReadLine(); // Read line
+
+                switch (input) 
+                {
+                    case "c": // 'c' means to reset the calculator
+                        goto Reset;
+                        break;
+                    case "q": // 'q' means to exit the calculator program
+                        goto Quit;
+                        break;
+                    default:
+                        break;
+                }
+             
+                ok = Double.TryParse(input, out num1); // Check if input is a number
+                
+                if (!ok)
+                    {
+                        Console.WriteLine("Ogiltig input! Försök igen!"); // If it wasn't, prompt the user to try again
+                    }
+                    
+            } while (!ok); // Continue the loop until valid input is provided
+                
+            calculator.Number1 = num1; // Set the first number in the calculator
+
+            do
+            {
+                
+                PrintInstructions();
+                Console.WriteLine("Det första talet är {0}", calculator.Number1); // Output the first number
+
+                Console.WriteLine("Skriv in operatorn ('+' '-' '*' '/')"); // Prompt user to input the operator
+                do
+                {
+                    input = Console.ReadLine();
+                    switch (input)
+                    {
+                        case "c":
+                            goto Reset; // Reset 'memory'
+                            break;
+                        case "q":
+                            goto Quit; // Exit
+                            break;
+                        case "+":
+                            calculator.Symbol = '+'; // Set symbol as addition
+                            ok = true;
+                            break;
+                        case "-":
+                            calculator.Symbol = '-'; // Set symbol as subtraction
+                            ok = true;
+                            break;
+                        case "*":
+                            calculator.Symbol = '*'; // Set symbol as multiplication
+                            ok = true;
+                            break;
+                        case "/":
+                            calculator.Symbol = '/'; // Set symbol as division
+                            ok = true;
+                            break;
+                        default:
+                            Console.WriteLine("Ogiltig input! Försök igen!"); // In case input was invalid, prompt user to try again
+                            ok = false;
+                            break;
+                    }
+
+                } while (!ok);
+
+                PrintInstructions();
+                Console.WriteLine("Du har skrivit in {0} {1}", calculator.Number1, calculator.Symbol); // Output the first number and the chosen symbol
+                Console.WriteLine("Skriv in det andra talet: "); // Prompt user for the second number
+
+                do
+                {
+                    input = Console.ReadLine();
+
+                    switch (input)
+                    {
+                        case "c":
+                            goto Reset; // Reset
+                            break;
+                        case "q":
+                            goto Quit; // Exit
+                            break;
+                        default:
+                            break;
+                    }
+
+                    ok = Double.TryParse(input, out num2); // Validate number
+
+                    if (!ok)
+                    {
+                        Console.WriteLine("Ogiltig input! Försök igen!"); // In case the input was invalid, prompt user to try again
+                        Console.WriteLine("Du har skrivit in {0} {1}", calculator.Number1, calculator.Symbol);
+                        Console.WriteLine("Skriv in det andra talet: ");
+                    }
+
+                    if (calculator.Symbol == '/' && num2 == 0) // If the user tried to divide by 0, print error message and prompt user to try again.
+                    {
+                        ok = false;
+                        Console.WriteLine("Division med 0 är inte tillåten.\nFörsök igen!");
+                        Console.WriteLine("Du har skrivit in {0} {1}", calculator.Number1, calculator.Symbol);
+                        Console.WriteLine("Skriv in det andra talet: ");
+                    }
+
+                } while (!ok);
+
+                calculator.Number2 = num2; // Set the second number in the calculator object.
+
+                Console.WriteLine("{0} {1} {2} = {3}", calculator.Number1, calculator.Symbol, calculator.Number2, calculator.Operate() ); // Output the calculation
+                Console.WriteLine("Tryck på valfri knapp för att fortsätta..."); // Press any key to continue...
+                Console.ReadKey();
+
+                calculator.Number1 = calculator.Operate(); // Set the result as the "number 1" variable
+
+            } while (input != "q");
+            Quit: // Label for exiting the program
+            Console.WriteLine("Tack för att du använde denna simulerade miniräknare.\nTryck ned valfri tangent för att avsulta."); // Exit message
+            Console.ReadKey();
+        }
+
+        static void PrintInstructions() // Prints instructions to this small program
+        {
+            Console.Clear();        // Tidy up the Console, in case user made lots of mistakes
+            Console.WriteLine("Det här är ett litet program som simulerar en miniräknare.");
+            Console.WriteLine("För att avsluta programmet, mata in 'q'");
+            Console.WriteLine("För att tömma minnet på miniräknaren, mata in 'c'");
+        }
+    }
+}
